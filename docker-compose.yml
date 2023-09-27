@@ -37,7 +37,7 @@ services:
     build:
       args:
         VITE_PROXY: "/_services/proxy"
-        VITE_STORAGE: "/_services/vss"
+        VITE_STORAGE: "/_services/vss/v2"
     restart: always
     stop_grace_period: 1m
 
