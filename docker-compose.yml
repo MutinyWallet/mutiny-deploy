@@ -1,0 +1,56 @@
+version: "3.7"
+
+services:
+  proxy:
+    image: ghcr.io/mutinywallet/ln-websocket-proxy:latest
+    container_name: "proxy"
+    restart: always
+    stop_grace_period: 1m
+
+  postgres:
+    container_name: "postgres"
+    image: 'postgres:15-alpine'
+    restart: always
+    stop_grace_period: 1m
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: vss
+
+  vss:
+    image: ghcr.io/mutinywallet/vss-rs:latest
+    container_name: "vss"
+    restart: always
+    stop_grace_period: 1m
+    environment:
+      DATABASE_URL: postgres://postgres:docker@postgres/vss
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+  web:
+    container_name: "mutiny-web"
+    image: ghcr.io/mutinywallet/mutiny-web:latest
+    build:
+      args:
+        VITE_PROXY: "/_services/proxy"
+        VITE_STORAGE: "/_services/vss"
+    restart: always
+    stop_grace_period: 1m
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    stop_grace_period: 1m
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web
+      - proxy
+      - vss
