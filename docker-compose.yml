@@ -4,14 +4,14 @@ services:
   proxy:
     image: ghcr.io/mutinywallet/ln-websocket-proxy:latest
     container_name: "proxy"
-    restart: always
-    stop_grace_period: 1m
+    restart: on-failure
+    stop_signal: SIGINT
 
   postgres:
+    image: postgres:15@sha256:546445ad21cb5893c0997080b831ee45945e798c4359270e16413c8bd93575db
     container_name: "postgres"
-    image: 'postgres:15-alpine'
-    restart: always
-    stop_grace_period: 1m
+    restart: on-failure
+    stop_signal: SIGINT
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
     environment:
@@ -22,8 +22,8 @@ services:
   vss:
     image: ghcr.io/mutinywallet/vss-rs:master
     container_name: "vss"
-    restart: always
-    stop_grace_period: 1m
+    restart: on-failure
+    stop_signal: SIGINT
     environment:
       DATABASE_URL: postgres://postgres:docker@postgres/vss
       SELF_HOST: "true"
@@ -34,21 +34,15 @@ services:
 
   web:
     container_name: "mutiny-web"
-    image: ghcr.io/mutinywallet/mutiny-web:latest
-    build:
-      args:
-        VITE_PROXY: "/_services/proxy"
-        VITE_STORAGE: "/_services/vss/v2"
-    restart: always
-    stop_grace_period: 1m
+    image: ghcr.io/mutinywallet/mutiny-web:vss-configurable
+    restart: on-failure
 
   nginx:
-    image: nginx:alpine
-    container_name: nginx
-    restart: always
-    stop_grace_period: 1m
+    image: nginx:1.21-alpine@sha256:686aac2769fd6e7bab67663fd38750c135b72d993d0bb0a942ab02ef647fc9c3
+    init: true
+    restart: on-failure
     ports:
-      - "4499:80"
+      - "14499:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
