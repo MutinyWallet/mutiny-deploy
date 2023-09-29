@@ -291,3 +291,27 @@ Then paste the following into the file:
 ```
 
 Then save the file and exit.
+
+
+## Step 4. Updating Mutiny
+
+To update mutiny you'll need to pull the latest changes from the repo and then restart the docker containers. You can
+do this by running the following commands:
+
+cd into the mutiny-deploy folder:
+
+```bash
+cd mutiny-deploy
+```
+
+Then pull the latest changes:
+
+```bash
+git pull
+```
+
+Then restart the docker containers:
+
+```bash
+docker-compose restart
+```
