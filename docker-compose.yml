@@ -20,7 +20,7 @@ services:
       POSTGRES_DB: vss
 
   vss:
-    image: ghcr.io/mutinywallet/vss-rs:master
+    image: ghcr.io/mutinywallet/vss-rs:latest
     container_name: "vss"
     restart: on-failure
     stop_signal: SIGINT
@@ -34,7 +34,7 @@ services:
 
   web:
     container_name: "mutiny-web"
-    image: ghcr.io/mutinywallet/mutiny-web:vss-configurable
+    image: ghcr.io/mutinywallet/mutiny-web:latest
     restart: on-failure
 
   nginx:
