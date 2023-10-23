@@ -185,14 +185,14 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docke
 # update packages again
 sudo apt-get update
 # install docker engine
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose
 # start docker
 sudo systemctl start docker
 # enable docker startup on boot
 sudo systemctl enable docker
 # make a new docker group
 sudo newgrp docker
-# add current user to docker group
+# add current user to docker group. restart your shell after running this.
 sudo usermod -aG docker $USER
 # make sure you set docker socket permissions for your user
 sudo chown root:docker /var/run/docker.sock
@@ -266,10 +266,10 @@ sudo systemctl reload nginx
 
 ### 3.2. Setting up TLS with Let's Encrypt
 
-Now that you have nginx running, you'll need to set up TLS with Let's Encrypt. First, you may need to install certbot.
+Now that you have nginx running, you'll need to set up TLS with Let's Encrypt. First, you may need to install certbot and the certbot nginx plugin.
 
 ```bash
-sudo apt-get install certbot
+sudo apt-get install certbot python3-certbot-nginx
 ```
 
 Then you'll need to run the following command to get a certificate:
