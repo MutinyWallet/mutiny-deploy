@@ -307,7 +307,7 @@ cd mutiny-deploy
 Then pull the latest changes:
 
 ```bash
-git pull
+git pull && docker-compose pull
 ```
 
 Then restart the docker containers:
