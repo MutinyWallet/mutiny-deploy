@@ -5,13 +5,11 @@ services:
     image: ghcr.io/mutinywallet/ln-websocket-proxy:latest
     container_name: "proxy"
     restart: unless-stopped
-    stop_signal: SIGINT
 
   postgres:
     image: postgres:15@sha256:546445ad21cb5893c0997080b831ee45945e798c4359270e16413c8bd93575db
     container_name: "postgres"
     restart: unless-stopped
-    stop_signal: SIGINT
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
     environment:
@@ -23,7 +21,6 @@ services:
     image: ghcr.io/mutinywallet/vss-rs:latest
     container_name: "vss"
     restart: unless-stopped
-    stop_signal: SIGINT
     environment:
       DATABASE_URL: postgres://postgres:docker@postgres/vss
       SELF_HOST: "true"
