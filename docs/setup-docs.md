@@ -315,8 +315,8 @@ Then pull the latest changes:
 git pull && docker-compose pull
 ```
 
-Then restart the docker containers:
+Then recreate the docker containers:
 
 ```bash
-docker-compose restart
+docker-compose up -d
 ```
