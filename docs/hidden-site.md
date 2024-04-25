@@ -29,7 +29,7 @@ http {
         }
 
         # These files need to be given directly, cannot be behind hidden path
-         location ~* ^/(assets|images|public|favicon.ico|manifest.webmanifest)/ {
+         location ~* ^/(assets|images|public|i18n|favicon.ico|manifest.webmanifest)/ {
             proxy_pass http://web:80;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
